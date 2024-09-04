@@ -1,8 +1,15 @@
+using Hotello.API.Data;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddDbContext<HotelloDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("HotelloDB"));
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
