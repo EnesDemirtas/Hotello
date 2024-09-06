@@ -2,6 +2,7 @@ using Hotello.API.Configs;
 using Hotello.API.Contracts;
 using Hotello.API.Data;
 using Hotello.API.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -13,6 +14,10 @@ builder.Services.AddDbContext<HotelloDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("HotelloDB"));
 });
+
+builder.Services.AddIdentityCore<ApiUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<HotelloDbContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

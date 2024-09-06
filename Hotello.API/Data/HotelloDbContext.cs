@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotello.API.Data;
 
-public class HotelloDbContext : DbContext
+public class HotelloDbContext : IdentityDbContext<ApiUser>
 {
     public HotelloDbContext(DbContextOptions options) : base(options)
     {
