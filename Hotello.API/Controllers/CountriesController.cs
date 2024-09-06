@@ -60,7 +60,7 @@ namespace Hotello.API.Controllers
                 return BadRequest("Invalid Record ID");
             }
 
-            var country = await _countryRepository.GetAsyc(id);
+            var country = await _countryRepository.GetAsync(id);
             if (country == null)
             {
                 return NotFound();
@@ -102,7 +102,7 @@ namespace Hotello.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            var country = await _countryRepository.GetAsyc(id);
+            var country = await _countryRepository.GetAsync(id);
             if (country == null)
             {
                 return NotFound();
