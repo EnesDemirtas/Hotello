@@ -1,5 +1,7 @@
 using Hotello.API.Configs;
+using Hotello.API.Contracts;
 using Hotello.API.Data;
+using Hotello.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -26,6 +28,9 @@ builder.Services.AddCors(options =>
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddAutoMapper(typeof(AutomapperConfig));
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 
 var app = builder.Build();
 

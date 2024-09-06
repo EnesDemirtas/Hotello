@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hotello.API.Data;
 using Hotello.API.Models.Country;
 using AutoMapper;
+using Hotello.API.Contracts;
 
 namespace Hotello.API.Controllers
 {
@@ -15,20 +16,20 @@ namespace Hotello.API.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private readonly HotelloDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ICountryRepository _countryRepository;
 
-        public CountriesController(HotelloDbContext context, IMapper mapper)
+        public CountriesController(IMapper mapper, ICountryRepository countryRepository)
         {
-            _context = context;
             _mapper = mapper;
+            _countryRepository = countryRepository;
         }
 
         // GET: api/Countries
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetCountryDTO>>> GetCountries()
         {
-            var countries = await _context.Countries.ToListAsync();
+            var countries = await _countryRepository.GetAllAsync();
             var records = _mapper.Map<List<GetCountryDTO>>(countries);
             return Ok(records);
         }
@@ -37,7 +38,7 @@ namespace Hotello.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountryDTO>> GetCountry(int id)
         {
-            var country = await _context.Countries.Include(c => c.Hotels).FirstOrDefaultAsync(c => c.Id == id);
+            var country = await _countryRepository.GetDetailsAsync(id);
 
             if (country == null)
             {
@@ -59,7 +60,7 @@ namespace Hotello.API.Controllers
                 return BadRequest("Invalid Record ID");
             }
 
-            var country = await _context.Countries.FindAsync(id);
+            var country = await _countryRepository.GetAsyc(id);
             if (country == null)
             {
                 return NotFound();
@@ -69,11 +70,11 @@ namespace Hotello.API.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _countryRepository.UpdateAsync(country);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CountryExists(id))
+                if (!await CountryExists(id))
                 {
                     return NotFound();
                 }
@@ -92,31 +93,29 @@ namespace Hotello.API.Controllers
         public async Task<ActionResult<Country>> PostCountry(CreateCountryDTO createCountryDTO)
         {
             var country = _mapper.Map<Country>(createCountryDTO);
-            _context.Countries.Add(country);
-            await _context.SaveChangesAsync();
+            var createdCountry = await _countryRepository.AddAsync(country);
 
-            return CreatedAtAction("GetCountry", new { id = country.Id }, country);
+            return CreatedAtAction("GetCountry", new { id = createdCountry.Id }, createdCountry);
         }
 
         // DELETE: api/Countries/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
-            var country = await _context.Countries.FindAsync(id);
+            var country = await _countryRepository.GetAsyc(id);
             if (country == null)
             {
                 return NotFound();
             }
 
-            _context.Countries.Remove(country);
-            await _context.SaveChangesAsync();
+            await _countryRepository.DeleteAsync(id);
 
             return NoContent();
         }
 
-        private bool CountryExists(int id)
+        private async Task<bool> CountryExists(int id)
         {
-            return _context.Countries.Any(e => e.Id == id);
+            return await _countryRepository.Exists(id);
         }
     }
 }
