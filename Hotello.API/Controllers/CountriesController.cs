@@ -9,6 +9,7 @@ using Hotello.API.Data;
 using Hotello.API.Models.Country;
 using AutoMapper;
 using Hotello.API.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotello.API.Controllers
 {
@@ -53,6 +54,7 @@ namespace Hotello.API.Controllers
         // PUT: api/Countries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutCountry(int id, UpdateCountryDTO updateCountryDTO)
         {
             if (id != updateCountryDTO.Id)
@@ -90,6 +92,7 @@ namespace Hotello.API.Controllers
         // POST: api/Countries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Country>> PostCountry(CreateCountryDTO createCountryDTO)
         {
             var country = _mapper.Map<Country>(createCountryDTO);
@@ -100,6 +103,7 @@ namespace Hotello.API.Controllers
 
         // DELETE: api/Countries/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCountry(int id)
         {
             var country = await _countryRepository.GetAsync(id);

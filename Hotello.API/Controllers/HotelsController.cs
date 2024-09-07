@@ -9,6 +9,7 @@ using Hotello.API.Data;
 using Hotello.API.Contracts;
 using AutoMapper;
 using Hotello.API.Models.Hotel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotello.API.Controllers
 {
@@ -49,6 +50,7 @@ namespace Hotello.API.Controllers
         // PUT: api/Hotels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutHotel(int id, HotelDTO hotelDTO)
         {
             if (id != hotelDTO.Id)
@@ -86,6 +88,7 @@ namespace Hotello.API.Controllers
         // POST: api/Hotels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Hotel>> PostHotel(CreateHotelDTO createHotelDTO)
         {
             var hotel = _mapper.Map<Hotel>(createHotelDTO);
@@ -96,6 +99,7 @@ namespace Hotello.API.Controllers
 
         // DELETE: api/Hotels/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteHotel(int id)
         {
             var hotel = await _hotelRepository.GetAsync(id);

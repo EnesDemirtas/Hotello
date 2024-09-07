@@ -42,13 +42,30 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
     {
-        var isValidUser = await _authManager.Login(loginDTO);
+        var authResponse = await _authManager.Login(loginDTO);
 
-        if (!isValidUser)
+        if (authResponse == null)
         {
             return Unauthorized();
         }
 
-        return Ok();
+        return Ok(authResponse);
+    }
+
+    [HttpPost]
+    [Route("refreshtoken")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDTO request)
+    {
+        var authResponse = await _authManager.VerifyRefreshToken(request);
+        
+        if (authResponse == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(authResponse);
     }
 }
