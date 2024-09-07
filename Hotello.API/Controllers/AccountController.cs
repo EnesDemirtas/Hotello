@@ -34,4 +34,21 @@ public class AccountController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost]
+    [Route("login")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
+    {
+        var isValidUser = await _authManager.Login(loginDTO);
+
+        if (!isValidUser)
+        {
+            return Unauthorized();
+        }
+
+        return Ok();
+    }
 }

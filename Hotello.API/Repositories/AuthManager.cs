@@ -15,6 +15,23 @@ public class AuthManager : IAuthManager
         _mapper = mapper;
         _userManager = userManager;
     }
+
+    public async Task<bool> Login(LoginDTO loginDTO)
+    {
+        bool isValidUser = false;
+        try
+        {
+            var user = await _userManager.FindByEmailAsync(loginDTO.Email);
+            isValidUser = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
+        }
+        catch (Exception)
+        {
+            
+        }
+
+        return isValidUser;
+    }
+
     public async Task<IEnumerable<IdentityError>> Register(ApiUserDTO userDTO)
     {
         var user = _mapper.Map<ApiUser>(userDTO);
