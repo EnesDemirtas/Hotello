@@ -2,6 +2,7 @@
 using Hotello.API.Data;
 using Hotello.API.Models.Country;
 using Hotello.API.Models.Hotel;
+using Hotello.API.Models.User;
 
 namespace Hotello.API.Configs;
 
@@ -16,5 +17,7 @@ public class AutomapperConfig : Profile
 
         CreateMap<Hotel, HotelDTO>().ReverseMap();
         CreateMap<Hotel, CreateHotelDTO>().ReverseMap();
+
+        CreateMap<ApiUserDTO, ApiUser>().ReverseMap();
     }
 }
