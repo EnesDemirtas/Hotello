@@ -1,4 +1,4 @@
-﻿using Hotello.API.Exceptions;
+﻿using Hotello.Core.Exceptions;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;

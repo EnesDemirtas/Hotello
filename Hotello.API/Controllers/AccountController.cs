@@ -1,5 +1,5 @@
-﻿using Hotello.API.Contracts;
-using Hotello.API.Models.User;
+﻿using Hotello.Core.Contracts;
+using Hotello.Core.Models.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

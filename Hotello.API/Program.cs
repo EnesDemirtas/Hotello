@@ -1,9 +1,9 @@
 using Asp.Versioning;
-using Hotello.API.Configs;
-using Hotello.API.Contracts;
-using Hotello.API.Data;
+using Hotello.Core.Configs;
+using Hotello.Core.Contracts;
+using Hotello.Data;
 using Hotello.API.Middlewares;
-using Hotello.API.Repositories;
+using Hotello.Core.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;

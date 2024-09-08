@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hotello.API.Data;
-using Hotello.API.Models.Country;
+using Hotello.Data;
+using Hotello.Core.Models.Country;
 using AutoMapper;
-using Hotello.API.Contracts;
+using Hotello.Core.Contracts;
 using Microsoft.AspNetCore.Authorization;
-using Hotello.API.Exceptions;
+using Hotello.Core.Exceptions;
 using Asp.Versioning;
-using Hotello.API.Models;
+using Hotello.Core.Models;
 using Microsoft.AspNetCore.OData.Query;
 
 namespace Hotello.API.Controllers

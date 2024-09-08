@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hotello.API.Data;
-using Hotello.API.Contracts;
+using Hotello.Data;
+using Hotello.Core.Contracts;
 using AutoMapper;
-using Hotello.API.Models.Hotel;
+using Hotello.Core.Models.Hotel;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Hotello.API.Controllers
