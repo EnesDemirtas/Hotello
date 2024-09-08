@@ -10,6 +10,7 @@ using Hotello.API.Models.Country;
 using AutoMapper;
 using Hotello.API.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using Hotello.API.Exceptions;
 
 namespace Hotello.API.Controllers
 {
@@ -43,7 +44,7 @@ namespace Hotello.API.Controllers
 
             if (country == null)
             {
-                return NotFound();
+                throw new NotFoundException(nameof(GetCountry), id);
             }
 
             var countryDTO = _mapper.Map<CountryDTO>(country);
@@ -65,7 +66,7 @@ namespace Hotello.API.Controllers
             var country = await _countryRepository.GetAsync(id);
             if (country == null)
             {
-                return NotFound();
+                throw new NotFoundException(nameof(GetCountry), id);
             }
 
             _mapper.Map(updateCountryDTO, country);
@@ -109,7 +110,7 @@ namespace Hotello.API.Controllers
             var country = await _countryRepository.GetAsync(id);
             if (country == null)
             {
-                return NotFound();
+                throw new NotFoundException(nameof(GetCountry), id);
             }
 
             await _countryRepository.DeleteAsync(id);

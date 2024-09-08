@@ -1,6 +1,7 @@
 using Hotello.API.Configs;
 using Hotello.API.Contracts;
 using Hotello.API.Data;
+using Hotello.API.Middlewares;
 using Hotello.API.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -72,6 +73,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

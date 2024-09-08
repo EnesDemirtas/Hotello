@@ -9,9 +9,11 @@ namespace Hotello.API.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly IAuthManager _authManager;
-    public AccountController(IAuthManager authManager)
+    private readonly ILogger<AccountController> _logger;
+    public AccountController(IAuthManager authManager, ILogger<AccountController> logger)
     {
         _authManager = authManager;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -21,6 +23,7 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Register([FromBody] ApiUserDTO userDTO)
     {
+        _logger.LogInformation($"Registration attempt for {userDTO.Email}");
         var errors = await _authManager.Register(userDTO);
 
         if (errors.Any())
@@ -42,6 +45,8 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Login([FromBody] LoginDTO loginDTO)
     {
+        _logger.LogInformation($"Login attempt for {loginDTO.Email}");
+
         var authResponse = await _authManager.Login(loginDTO);
 
         if (authResponse == null)
@@ -50,6 +55,8 @@ public class AccountController : ControllerBase
         }
 
         return Ok(authResponse);
+
+
     }
 
     [HttpPost]
@@ -60,7 +67,7 @@ public class AccountController : ControllerBase
     public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDTO request)
     {
         var authResponse = await _authManager.VerifyRefreshToken(request);
-        
+
         if (authResponse == null)
         {
             return Unauthorized();
