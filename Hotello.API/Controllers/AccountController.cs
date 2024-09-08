@@ -1,6 +1,5 @@
 ﻿using Hotello.Core.Contracts;
 using Hotello.Core.Models.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotello.API.Controllers;

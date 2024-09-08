@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Hotello.Data;
 using Hotello.Core.Models.Country;
 using Hotello.Core.Models.Hotel;
 using Hotello.Core.Models.User;
+using Hotello.Data;
 
 namespace Hotello.Core.Configs;
 

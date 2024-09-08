@@ -1,9 +1,9 @@
 using Asp.Versioning;
+using Hotello.API.Middlewares;
 using Hotello.Core.Configs;
 using Hotello.Core.Contracts;
-using Hotello.Data;
-using Hotello.API.Middlewares;
 using Hotello.Core.Repositories;
+using Hotello.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
@@ -119,7 +119,7 @@ app.Use(async (context, next) =>
             Public = true,
             MaxAge = TimeSpan.FromSeconds(10)
         };
-    context.Response.Headers[HeaderNames.Vary] = 
+    context.Response.Headers[HeaderNames.Vary] =
         new string[] { "Accept-Encoding" };
 
     await next();

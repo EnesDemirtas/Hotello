@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Hotello.Core.Contracts;
-using Hotello.Data;
 using Hotello.Core.Models;
+using Hotello.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotello.Core.Repositories;

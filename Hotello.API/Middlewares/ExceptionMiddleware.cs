@@ -1,5 +1,4 @@
 ﻿using Hotello.Core.Exceptions;
-using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 
@@ -20,7 +19,8 @@ public class ExceptionMiddleware
         try
         {
             await _next(context);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex, $"Something went wrong while processing {context.Request.Path}");
             await HandleExceptionAsync(context, ex);
