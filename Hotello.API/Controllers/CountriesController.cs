@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Hotello.API.Exceptions;
 using Asp.Versioning;
 using Hotello.API.Models;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace Hotello.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace Hotello.API.Controllers
 
         // GET: api/Countries
         [HttpGet("GetAll")]
+        [EnableQuery]
         public async Task<ActionResult<IEnumerable<GetCountryDTO>>> GetCountries()
         {
             var countries = await _countryRepository.GetAllAsync();
