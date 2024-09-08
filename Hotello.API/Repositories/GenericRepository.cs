@@ -1,5 +1,8 @@
-﻿using Hotello.API.Contracts;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Hotello.API.Contracts;
 using Hotello.API.Data;
+using Hotello.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotello.API.Repositories;
@@ -7,10 +10,12 @@ namespace Hotello.API.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     private readonly HotelloDbContext _context;
+    private readonly IMapper _mapper;
 
-    public GenericRepository(HotelloDbContext context)
+    public GenericRepository(HotelloDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
     public async Task<T> AddAsync(T entity)
     {
@@ -35,6 +40,23 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
+    }
+
+    public async Task<PagedResult<TResult>> GetAllAsync<TResult>(QueryParams queryParams)
+    {
+        var totalCount = await _context.Set<T>().CountAsync();
+        var items = await _context.Set<T>()
+            .Skip(queryParams.StartIndex)
+            .Take(queryParams.PageSize)
+            .ProjectTo<TResult>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+        return new PagedResult<TResult>
+        {
+            Items = items,
+            PageNumber = queryParams.PageNumber,
+            RecordNumber = queryParams.PageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<T> GetAsync(int? id)
