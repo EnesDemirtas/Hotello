@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Hotello.API.Configs;
 using Hotello.API.Contracts;
 using Hotello.API.Data;
@@ -34,6 +35,22 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", p =>
         p.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+});
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("api-version"),
+        new HeaderApiVersionReader("X-Version"),
+        new MediaTypeApiVersionReader("ver")
+        );
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
 });
 
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
